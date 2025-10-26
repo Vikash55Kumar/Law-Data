@@ -51,10 +51,15 @@ const registerLaw = asyncHandler(async (req: Request, res: Response) => {
       throw new ApiError(500, "Failed to extract data from the document.");
     }
 
+    // Normalize extracted text into plain text before storing.
+    // Collapse all whitespace (newlines, tabs, multiple spaces) to single spaces and trim.
+    const rawExtracted = String(extractedData.data.extracted_text || "");
+    const plainText = rawExtracted.replace(/\s+/g, " ").trim();
+
     const lawDoc = await LawModel.create({
       category,
       act_name,
-      act_details: extractedData.data.extracted_text,
+      act_details: plainText,
     });
 
     return res
