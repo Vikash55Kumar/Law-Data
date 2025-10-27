@@ -109,7 +109,7 @@ const getAllLaws = asyncHandler(async (req: Request, res: Response) => {
     }
     return res
       .status(200)
-      .json(new ApiResponse(200, laws, "Laws retrieved successfully"));
+      .json(new ApiResponse(200, {laws, total:laws.length}, "Laws retrieved successfully"));
   } catch (error: any) {
     throw new ApiError(500, error.message);
   }
